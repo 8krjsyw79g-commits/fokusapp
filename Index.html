@@ -1,0 +1,554 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#FFF8E8" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#2A1D10" media="(prefers-color-scheme: dark)">
+<title>FokusApp</title>
+<style>
+/* Farbpalette der MediApp */
+:root {
+  color-scheme: light dark;
+  --bg:#FFF8E8; --paper:#FFFFFF; --panel2:#FFF5D8; --ink:#4F3B1E; --muted:#8D6E3E;
+  --line:#F0D7A0; --accent:#F59E0B; --teal:#14B8A6; --danger:#C2410C; --warn:#B45309;
+  --shadow:0 4px 18px rgba(237,170,43,.14); --radius:22px;
+  --button-ink:#34220D; --teal-ink:#096759; --stop-ink:#842A0C;
+}
+@media (prefers-color-scheme:dark) {
+  :root {
+    --bg:#2A1D10; --paper:#352516; --panel2:#42301D; --ink:#FFF7EA; --muted:#E4CFA7;
+    --line:#6E532D; --accent:#FDBA36; --teal:#5EEAD4; --danger:#FDB0A7; --warn:#FCD34D;
+    --shadow:none; --teal-ink:#5EEAD4; --stop-ink:#FDB0A7;
+  }
+}
+*{box-sizing:border-box}body{margin:0;color:var(--ink);background:var(--bg);font:16px/1.45 system-ui,-apple-system,sans-serif}button,select{font:inherit}button{cursor:pointer}button:disabled{cursor:default;opacity:.46}button:focus-visible,select:focus-visible,.table-wrap:focus-visible{outline:3px solid var(--warn);outline-offset:4px}
+.shell{width:min(1136px,100% - 48px);margin:0 auto}header{border-bottom:1px solid var(--line);background:var(--paper)}.credit{margin:0 auto;padding-top:8px;font-size:11px;line-height:1.35;color:var(--muted)}.topbar{min-height:74px;display:flex;align-items:center;justify-content:space-between;gap:12px}.brand{display:flex;align-items:center;gap:11px;font-size:20px;font-weight:760;letter-spacing:-.04em}.logo{display:grid;place-items:center;width:35px;height:35px;border-radius:11px;background:var(--accent);color:var(--button-ink);font-size:24px}.button{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:9px 15px;border:1px solid var(--line);border-radius:11px;background:var(--paper);color:var(--ink);font-weight:650;font-size:14px}.button:hover:not(:disabled){filter:brightness(.96)}.outline{background:transparent}
+main{padding:31px 0 35px}.heading{display:flex;align-items:end;justify-content:space-between;gap:16px;margin-bottom:19px}.heading p{margin:0;color:var(--muted);font-size:14px}.heading h1{font-size:clamp(28px,5vw,41px);letter-spacing:-.055em;line-height:1.05;margin:5px 0 0}.actions{display:flex;gap:8px;flex-wrap:wrap}.dashboard{display:grid;grid-template-columns:1.35fr 1fr;gap:16px;align-items:stretch}.card{border:1px solid var(--line);background:var(--paper);border-radius:var(--radius);padding:23px;box-shadow:var(--shadow)}.timer{background:linear-gradient(180deg,var(--paper),var(--panel2));color:var(--ink);text-align:center;display:flex;align-items:center;flex-direction:column;justify-content:space-between;min-height:385px}.timer [hidden], [hidden]{display:none!important}
+.timer-top{width:100%;display:flex;justify-content:space-between;gap:8px;align-items:center;text-align:left}.timer h2,.card h2{font-size:17px;letter-spacing:-.025em;margin:0}.pill{display:inline-flex;gap:7px;align-items:center;border-radius:30px;padding:4px 9px;background:var(--panel2);color:var(--ink);border:1px solid var(--line);font-size:12px;font-weight:650}.pill:before{content:'';width:7px;height:7px;background:var(--muted);border-radius:50%}.pill.running:before{background:var(--teal)}.pill.reached{color:var(--teal-ink)}.clock-block{width:100%;padding:22px 0 18px}.clock-caption{color:var(--muted);font-size:14px}.clock,.counter,.value,td{font-variant-numeric:tabular-nums}.clock{font-size:clamp(60px,9vw,100px);line-height:1.06;letter-spacing:-.07em;font-weight:670;margin:4px 0 5px;overflow-wrap:anywhere}.subclock{min-height:24px;color:var(--muted);font-size:14px}.track{height:4px;width:min(240px,75%);margin:13px auto 0;border-radius:10px;overflow:hidden;background:var(--line)}.track span{display:block;background:var(--teal);height:100%;width:0}.primary{min-height:53px;background:var(--accent);border-color:transparent;color:var(--button-ink);width:min(100%,275px);font-size:16px}.primary.stop{background:color-mix(in srgb,var(--danger) 13%,var(--paper));border-color:var(--danger);color:var(--stop-ink)}.timer-note{font-size:12px;color:var(--muted);margin:9px 0 0;min-height:18px}.settings{display:flex;flex-direction:column;gap:14px}.modes{display:grid;gap:6px}.mode{min-height:43px;text-align:left;display:flex;gap:10px;align-items:center;border:1px solid var(--line);border-radius:10px;padding:6px 10px;font-size:14px;cursor:pointer}.mode:has(:checked){border-color:var(--accent);background:color-mix(in srgb,var(--accent) 17%,var(--paper))}.mode:has(:disabled){cursor:default}.mode input{accent-color:var(--accent);width:16px;height:16px;flex:none}.mode small{color:var(--muted);margin-left:auto;text-align:right}.settings-row{display:flex;justify-content:space-between;align-items:center;gap:8px}.settings-row .button{min-height:38px}.settings-row small,.hint{color:var(--muted);font-size:13px}.hint{margin:0}.target{border-top:1px solid var(--line);padding-top:12px}.value{font-size:19px;font-weight:720}.steps{display:flex;align-items:center;gap:7px}.steps .button{padding-inline:9px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:16px 0}.stat{padding:15px 19px;border-radius:17px}.stat span{color:var(--muted);font-size:13px;font-weight:620}.stat strong{display:block;font-size:30px;letter-spacing:-.055em;line-height:1.15;margin-top:3px}.records{padding-bottom:15px}.records-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}.tabs{display:flex;gap:4px;background:var(--bg);border-radius:10px;padding:3px}.tab{min-height:35px;border:0;border-radius:8px;background:transparent;color:var(--muted);padding:5px 10px;font-size:13px;font-weight:650}.tab[aria-pressed=true]{background:var(--paper);color:var(--ink);box-shadow:0 0 0 1px var(--line)}.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;text-align:left;white-space:nowrap;font-size:14px}th,td{border-bottom:1px solid var(--line);padding:9px 12px}th{font-size:12px;color:var(--muted)}tbody tr:last-child td{border-bottom:0}.empty{white-space:normal;color:var(--muted);padding-block:19px}.footer{color:var(--muted);font-size:13px;margin:11px 0 0}.feedback{margin:0 0 14px;padding:9px 13px;border-radius:10px;background:color-mix(in srgb,var(--teal) 14%,var(--paper));color:var(--teal-ink);font-size:14px}.feedback.error{background:color-mix(in srgb,var(--danger) 13%,var(--paper));color:var(--stop-ink)}
+@media(max-width:760px){.shell{width:calc(100% - 28px)}main{padding-top:21px}.heading{align-items:start;flex-direction:column}.dashboard{grid-template-columns:1fr}.card{padding:17px}.timer{min-height:330px}.stats{gap:7px}.stat{padding:11px 8px}.stat span{font-size:11px}.stat strong{font-size:25px}.tabs{flex-wrap:wrap}.topbar{min-height:63px}.settings{gap:11px}}
+@media(prefers-reduced-motion:no-preference){.track span{transition:width .2s linear}}
+.delete-window{min-height:36px;padding:5px 10px;color:var(--stop-ink)}
+td:last-child:has(.delete-window){text-align:right}
+.version{margin-top:3px;font-size:11px}
+</style>
+</head>
+<body>
+<header>
+  <p class="shell credit">Entwickler: Björn Dröscher (11.26)</p>
+  <div class="shell topbar"><div class="brand"><span class="logo" aria-hidden="true">◉</span>FokusApp</div><button class="button outline" id="export">Excel exportieren <span aria-hidden="true">↓</span></button></div></header>
+<main class="shell">
+  <div class="heading"><div><p id="date"></p><h1>Fokus erfassen</h1></div><div class="actions"><button id="new-day" class="button">Neue Erfassung / Tag</button><button id="close-day" class="button outline">Tagesabschluss</button></div></div>
+  <p id="feedback" class="feedback" role="status" hidden></p>
+  <div class="dashboard">
+    <section class="card timer" aria-labelledby="timer-title">
+      <div class="timer-top"><h2 id="timer-title">Arbeitsphase</h2><span id="status" class="pill"></span></div>
+      <div class="clock-block"><div id="clock-caption" class="clock-caption">Erfasste Zeit</div><div id="clock" class="clock">00:00</div><div id="subclock" class="subclock"></div><div class="track" id="track" aria-hidden="true" hidden><span></span></div></div>
+      <div style="width:100%"><button id="start-stop" class="button primary">Arbeitsphase starten</button><p class="timer-note" id="timer-note"></p><button class="button" id="enable-audio" hidden>Tonsignal aktivieren</button></div>
+    </section>
+    <section class="card settings" aria-labelledby="settings-title">
+      <h2 id="settings-title">Timer-Modus</h2>
+      <div class="modes" role="radiogroup" aria-labelledby="settings-title">
+        <label class="mode"><input type="radio" name="mode" value="free"><span>Freie Erfassung</span><small>Stoppuhr</small></label>
+        <label class="mode"><input type="radio" name="mode" value="target"><span>Fokusfenster</span><small>Gong</small></label>
+        <label class="mode"><input type="radio" name="mode" value="extended"><span>Verlängertes Fokusfenster</span><small>Doppelton</small></label>
+      </div>
+      <div class="target settings-row"><div><small>Festgelegte Basiszeit</small><div id="base" class="value">—</div></div><button class="button" id="adopt">Gesamt-Ø übernehmen</button></div>
+      <div class="settings-row" id="extension" hidden><div><small>Verlängerung</small><div id="extra" class="value"></div></div><div class="steps"><button class="button" id="minus" aria-label="Verlängerung um fünf Minuten reduzieren">−5 Min.</button><button class="button" id="plus" aria-label="Verlängerung um fünf Minuten erhöhen">+5 Min.</button></div></div>
+      <p id="hint" class="hint"></p>
+    </section>
+  </div>
+  <div class="stats" aria-label="Statistik">
+    <div class="card stat"><span>Zeitfenster heute</span><strong class="counter" id="today-count">0</strong></div>
+    <div class="card stat"><span>Durchschnitt heute</span><strong class="counter" id="today-average">—</strong></div>
+    <div class="card stat"><span>Gesamtdurchschnitt</span><strong class="counter" id="overall-average">—</strong></div>
+  </div>
+  <section class="card records" aria-labelledby="records-title">
+    <div class="records-head"><h2 id="records-title">Protokoll</h2><div class="tabs" aria-label="Protokollansicht"><button class="tab" data-view="today" aria-pressed="true">Heute</button><button class="tab" data-view="all" aria-pressed="false">Alle Zeitfenster</button><button class="tab" data-view="days" aria-pressed="false">Tagesübersicht</button></div></div>
+    <div class="table-wrap" tabindex="0" role="region" aria-label="Protokolltabelle"><table id="records"></table></div>
+  </section>
+  <p class="footer">Die Erfassung bleibt in diesem Browser gespeichert.</p>
+  <p class="footer version">Version 1.2.0</p>
+</main>
+<script>
+"use strict";
+const byId = id => document.getElementById(id);
+const storageKey = "fokusapp.v1";
+const fiveMinutes = 300000;
+const sessionLimit = 90 * 60 * 1000;
+const modes = {free:"Freie Erfassung",target:"Fokusfenster",extended:"Verlängertes Fokusfenster"};
+const clockFormat = new Intl.DateTimeFormat("de-DE", {hour:"2-digit",minute:"2-digit",second:"2-digit"});
+const dateFormat = new Intl.DateTimeFormat("de-DE", {weekday:"long",day:"numeric",month:"long",year:"numeric"});
+const weekdayFormat = new Intl.DateTimeFormat("de-DE", {weekday:"long"});
+const stampFormat = new Intl.DateTimeFormat("de-DE", {day:"2-digit",month:"2-digit",year:"numeric"});
+const blankState = () => ({days:{}, sessions:[], active:null, base:null, extra:fiveMinutes, mode:"free"});
+let state = blankState();
+let storageFailed = false;
+let view = "today";
+let renderedDate;
+let audio;
+
+function readState() {
+  const saved = localStorage.getItem(storageKey);
+  return saved ? JSON.parse(saved) : blankState();
+}
+function feedback(message, error = false) {
+  const box = byId("feedback");
+  box.textContent = message;
+  box.hidden = !message;
+  box.classList.toggle("error", error);
+}
+function update(change) {
+  const save = () => {
+    let result;
+    try {
+      const next = readState();
+      result = change(next);
+      if (result !== false) localStorage.setItem(storageKey, JSON.stringify(next));
+      state = next;
+      storageFailed = false;
+    } catch {
+      storageFailed = true;
+    }
+    render();
+    if (storageFailed) {
+      feedback("Speichern fehlgeschlagen. Prüfe, ob dieser Browser lokale Daten zulässt, und versuche es erneut.", true);
+      return false;
+    }
+    return result;
+  };
+  return navigator.locks?.request ? navigator.locks.request(storageKey, save) : Promise.resolve(save());
+}
+function dayKey(timestamp = Date.now()) {
+  const date = new Date(timestamp);
+  return [date.getFullYear(), date.getMonth() + 1, date.getDate()].map(value => String(value).padStart(2,"0")).join("-");
+}
+function displayDay(key) {
+  return stampFormat.format(new Date(key + "T12:00:00"));
+}
+const displayWeekday = key => weekdayFormat.format(new Date(key + "T12:00:00"));
+function duration(ms, round = Math.round) {
+  const seconds = Math.max(0, round(ms / 1000));
+  return String(Math.floor(seconds / 60)).padStart(2,"0") + ":" + String(seconds % 60).padStart(2,"0");
+}
+function average(items) {
+  return items.length ? items.reduce((total, item) => total + item.elapsed, 0) / items.length : null;
+}
+const displayDuration = value => value === null || value === undefined ? "—" : duration(value);
+function groupDays() {
+  const groups = new Map(Object.keys(state.days).map(key => [key, []]));
+  for (const item of state.sessions) {
+    if (!groups.has(item.day)) groups.set(item.day, []);
+    groups.get(item.day).push(item);
+  }
+  return groups;
+}
+function audioUnlock() {
+  try {
+    const Context = window.AudioContext || window.webkitAudioContext;
+    if (!audio && Context) audio = new Context();
+    if (audio && audio.state !== "running") audio.resume().catch(() => {});
+  } catch {}
+}
+function gong(double) {
+  if (!audio || audio.state !== "running") return false;
+  const strikes = double ? [0, .32] : [0];
+  for (const delay of strikes) {
+    const start = audio.currentTime + delay;
+    for (const [frequency, volume, tail] of [[523.25,.14,.65],[783.99,.035,.39]]) {
+      const oscillator = audio.createOscillator();
+      const gain = audio.createGain();
+      oscillator.frequency.value = frequency;
+      gain.gain.setValueAtTime(.0001, start);
+      gain.gain.exponentialRampToValueAtTime(volume, start + .018);
+      gain.gain.exponentialRampToValueAtTime(.0001, start + tail);
+      oscillator.connect(gain).connect(audio.destination);
+      oscillator.start(start);
+      oscillator.stop(start + tail + .02);
+    }
+  }
+  return true;
+}
+function limitSignal() {
+  if (audio?.state === "running") {
+    const start = audio.currentTime;
+    const oscillator = audio.createOscillator();
+    const gain = audio.createGain();
+    oscillator.frequency.value = 880;
+    gain.gain.setValueAtTime(.0001, start);
+    gain.gain.exponentialRampToValueAtTime(.17, start + .018);
+    gain.gain.exponentialRampToValueAtTime(.0001, start + .28);
+    oscillator.connect(gain).connect(audio.destination);
+    oscillator.start(start);
+    oscillator.stop(start + .3);
+  }
+  navigator.vibrate?.(180);
+}
+function finishSession(next, now) {
+  const active = next.active;
+  const deadline = active.start + sessionLimit;
+  const end = Math.min(deadline, Math.max(now, active.start));
+  next.sessions.push({...active, end, elapsed:end - active.start});
+  next.active = null;
+  return end === deadline ? "limited" : "stopped";
+}
+function reportStop(result) {
+  if (result === "limited") {
+    feedback("Nach 90 Minuten automatisch gestoppt und gespeichert.");
+    limitSignal();
+  } else if (result === "stopped") {
+    feedback("Zeitfenster gespeichert.");
+  }
+}
+let pendingLimit;
+function checkLimit() {
+  if (pendingLimit) return pendingLimit;
+  const start = state.active?.start;
+  if (start === undefined || Date.now() < start + sessionLimit) return;
+  pendingLimit = update(next => {
+    const now = Date.now();
+    if (next.active?.start !== start || now < start + sessionLimit) return false;
+    return finishSession(next, now);
+  }).then(reportStop).finally(() => { pendingLimit = undefined; });
+  return pendingLimit;
+}
+let signalling = false;
+async function checkSignal() {
+  const active = state.active;
+  if (!active?.target || active.signalled || signalling || document.hidden || audio?.state !== "running" || Date.now() - active.start < active.target || Date.now() - active.start >= sessionLimit) return;
+  signalling = true;
+  try {
+    const isDouble = await update(next => {
+      if (next.active?.start !== active.start || next.active.signalled || Date.now() - active.start >= sessionLimit) return false;
+      next.active.signalled = true;
+      return next.active.mode === "extended" ? "double" : "single";
+    });
+    if (isDouble) gong(isDouble === "double");
+  } finally {
+    signalling = false;
+  }
+}
+function renderClock() {
+  const active = state.active;
+  const today = dayKey();
+  const mode = active?.mode || state.mode;
+  const planned = mode === "free" || state.base === null ? null : state.base + (mode === "extended" ? state.extra : 0);
+  const target = active ? active.target : planned;
+  const elapsed = active ? Math.min(sessionLimit, Math.max(0, Date.now() - active.start)) : 0;
+  const reached = active && target !== null && elapsed >= target;
+  const status = byId("status");
+  status.className = "pill" + (active ? " running" : "") + (reached ? " reached" : "");
+  status.textContent = reached ? "Ziel erreicht" : active ? "Läuft" : state.days[today]?.closed ? "Tag abgeschlossen" : "Bereit";
+  byId("clock-caption").textContent = target === null ? "Erfasste Zeit" : reached ? "Zeit seit Ziel erreicht" : "Fokus-Countdown";
+  byId("clock").textContent = target === null ? duration(elapsed, Math.floor) : reached ? "+" + duration(elapsed - target, Math.floor) : duration(target - elapsed, Math.ceil);
+  byId("subclock").textContent = target === null ? (active ? "Beginn " + clockFormat.format(active.start) : "") : "Erfasst " + duration(elapsed, Math.floor) + " · Ziel " + duration(target);
+  byId("track").hidden = target === null;
+  byId("track").firstElementChild.style.width = target ? Math.min(100, elapsed / target * 100) + "%" : "0";
+  const button = byId("start-stop");
+  button.textContent = active ? "Stopp · Konzentration abgebrochen" : "Arbeitsphase starten";
+  button.classList.toggle("stop", Boolean(active));
+  button.disabled = !active && (Boolean(state.days[today]?.closed) || (mode !== "free" && target === null));
+  byId("enable-audio").hidden = !active || audio?.state === "running";
+  byId("timer-note").textContent = reached ? "Die Erfassung läuft bis zum Stopp oder bis 90:00 weiter." : "Automatischer Stopp bei 90:00. Für das Tonsignal die App im Vordergrund lassen.";
+}
+function renderTable(todayItems, groups) {
+  const table = byId("records");
+  const head = document.createElement("thead");
+  const body = document.createElement("tbody");
+  const dayView = view === "days";
+  const compactView = view === "all";
+  let headers = ["Datum","Start","Ende","Dauer","Modus","Basiszeit","+ Verlängerung","Zielzeit","Ziel erreicht"];
+  if (dayView) headers = ["Datum","Zeitfenster","Ø Dauer","Status","Abschluss"];
+  if (compactView) headers = ["Datum","Dauer (min:sec)",""];
+  function append(parent, values, tag) {
+    const row = parent.insertRow();
+    for (const value of values) {
+      const cell = document.createElement(tag);
+      if (tag === "th") cell.scope = "col";
+      cell.textContent = value;
+      row.append(cell);
+    }
+    return row;
+  }
+  append(head, headers, "th");
+  if (dayView) {
+    for (const [day, items] of [...groups].sort(([a],[b]) => b.localeCompare(a))) {
+      const closed = state.days[day]?.closed;
+      append(body, [displayDay(day), items.length, displayDuration(average(items)), closed ? "Abgeschlossen" : "Offen", closed ? clockFormat.format(closed) : "—"], "td");
+    }
+  } else {
+    const items = view === "today" ? todayItems : state.sessions;
+    for (const item of [...items].sort((a,b) => b.start - a.start)) {
+      if (compactView) {
+        const row = append(body, [displayDay(item.day), duration(item.elapsed)], "td");
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "button delete-window";
+        button.textContent = "Löschen";
+        button.setAttribute("aria-label", "Zeitfenster vom " + displayDay(item.day) + " um " + clockFormat.format(item.start) + " löschen");
+        button.onclick = () => deleteSession(item);
+        row.insertCell().append(button);
+        continue;
+      }
+      const endDay = dayKey(item.end);
+      const end = clockFormat.format(item.end) + (endDay === item.day ? "" : " · " + displayDay(endDay));
+      append(body, [displayDay(item.day), clockFormat.format(item.start), end, duration(item.elapsed), modes[item.mode], displayDuration(item.base), item.extra ? duration(item.extra) : "—", displayDuration(item.target), item.target === null ? "—" : item.elapsed >= item.target ? "Ja" : "Nein"], "td");
+    }
+  }
+  if (!body.rows.length) {
+    const cell = body.insertRow().insertCell();
+    cell.colSpan = headers.length;
+    cell.className = "empty";
+    cell.textContent = dayView ? "Noch keine Erfassungstage vorhanden." : "Noch keine Zeitfenster erfasst.";
+  }
+  table.replaceChildren(head, body);
+}
+async function deleteSession(item) {
+  const description = displayDay(item.day) + ", " + clockFormat.format(item.start) + " Uhr (" + duration(item.elapsed) + ")";
+  if (!window.confirm("Zeitfenster vom " + description + " dauerhaft löschen?")) return;
+  const deleted = await update(next => {
+    const index = next.sessions.findIndex(session => session.start === item.start && session.end === item.end);
+    if (index === -1) return false;
+    next.sessions.splice(index, 1);
+    return true;
+  });
+  if (deleted) {
+    feedback("Zeitfenster gelöscht. Die Durchschnitte wurden neu berechnet.");
+    document.querySelector('[data-view="all"]').focus();
+  }
+}
+function render() {
+  const today = dayKey();
+  renderedDate = today;
+  const groups = groupDays();
+  const todayItems = groups.get(today) || [];
+  const overall = average(state.sessions);
+  byId("date").textContent = dateFormat.format(Date.now());
+  byId("today-count").textContent = todayItems.length;
+  byId("today-average").textContent = displayDuration(average(todayItems));
+  byId("overall-average").textContent = displayDuration(overall);
+  byId("base").textContent = displayDuration(state.base);
+  byId("extra").textContent = duration(state.extra);
+  byId("extension").hidden = state.mode !== "extended";
+  byId("new-day").disabled = Boolean(state.active);
+  byId("new-day").textContent = state.days[today]?.closed ? "Heutigen Tag wieder öffnen" : "Neue Erfassung / Tag";
+  byId("close-day").disabled = Boolean(state.active || !state.days[today] || state.days[today].closed);
+  byId("adopt").disabled = Boolean(state.active || overall === null);
+  byId("minus").disabled = Boolean(state.active || state.extra <= fiveMinutes);
+  byId("plus").disabled = Boolean(state.active);
+  byId("hint").textContent = state.base === null ? "Erfasse zuerst ein freies Zeitfenster, um den Gesamtdurchschnitt übernehmen zu können." : "Die Basiszeit bleibt bis zur nächsten Übernahme gespeichert.";
+  document.querySelectorAll("input[name=mode]").forEach(input => {
+    input.checked = input.value === state.mode;
+    input.disabled = Boolean(state.active);
+  });
+  document.querySelectorAll("[data-view]").forEach(button => button.setAttribute("aria-pressed", String(button.dataset.view === view)));
+  renderTable(todayItems, groups);
+  renderClock();
+}
+
+byId("enable-audio").onclick = audioUnlock;
+byId("new-day").onclick = async () => {
+  const opened = await update(next => {
+    if (next.active) return false;
+    const today = dayKey();
+    next.days[today] = {closed:null};
+    view = "today";
+    return true;
+  });
+  if (opened) feedback("Die heutige Erfassung ist geöffnet.");
+};
+byId("close-day").onclick = async () => {
+  const closed = await update(next => {
+    const day = next.days[dayKey()];
+    if (next.active || !day || day.closed) return false;
+    day.closed = Date.now();
+    view = "days";
+    return true;
+  });
+  if (closed) feedback("Tagesabschluss gespeichert.");
+};
+byId("start-stop").onclick = async () => {
+  const activeStart = state.active?.start;
+  audioUnlock();
+  const changed = await update(next => {
+    const now = Date.now();
+    if (activeStart !== undefined) {
+      if (next.active?.start !== activeStart) return false;
+      return finishSession(next, now);
+    }
+    const day = dayKey(now);
+    if (next.active || next.days[day]?.closed || (next.mode !== "free" && next.base === null)) return false;
+    const base = next.mode === "free" ? null : next.base;
+    const extra = next.mode === "extended" ? next.extra : 0;
+    next.days[day] ??= {closed:null};
+    next.active = {day, start:now, mode:next.mode, base, extra, target:base === null ? null : base + extra, signalled:false};
+    return "started";
+  });
+  if (changed === "started") feedback("");
+  else reportStop(changed);
+};
+byId("adopt").onclick = async () => {
+  const adopted = await update(next => {
+    const value = average(next.sessions);
+    if (next.active || value === null) return false;
+    next.base = Math.max(1000, Math.round(value / 1000) * 1000);
+    return true;
+  });
+  if (adopted) feedback("Gesamtdurchschnitt als Basiszeit übernommen.");
+};
+for (const [id, delta] of [["plus", fiveMinutes], ["minus", -fiveMinutes]]) {
+  byId(id).onclick = () => update(next => {
+    if (next.active || next.mode !== "extended") return false;
+    next.extra = Math.max(fiveMinutes, next.extra + delta);
+  });
+}
+document.querySelectorAll("input[name=mode]").forEach(input => input.onchange = () => update(next => {
+  if (next.active) return false;
+  next.mode = input.value;
+}));
+document.querySelectorAll("[data-view]").forEach(button => button.onclick = () => {
+  view = button.dataset.view;
+  render();
+});
+function refresh() {
+  try {
+    state = readState();
+    render();
+    checkLimit();
+  } catch {
+    feedback("Die gespeicherten Daten lassen sich gerade nicht lesen.", true);
+  }
+}
+window.addEventListener("storage", event => {
+  if (event.key === storageKey || event.key === null) refresh();
+});
+window.addEventListener("pageshow", refresh);
+document.addEventListener("visibilitychange", () => {
+  if (!document.hidden) {
+    refresh();
+    checkSignal();
+  }
+});
+setInterval(() => {
+  if (dayKey() !== renderedDate) render();
+  if (state.active) {
+    renderClock();
+    checkLimit();
+    checkSignal();
+  }
+}, 150);
+
+const xmlHead = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
+const sheetNS = "http://schemas.openxmlformats.org/spreadsheetml/2006/main";
+const relNS = "http://schemas.openxmlformats.org/officeDocument/2006/relationships";
+const packageNS = "http://schemas.openxmlformats.org/package/2006/relationships";
+const excelDay = 86400000;
+const daySerial = key => Date.parse(key + "T00:00:00Z") / excelDay + 25569;
+function dateTimeSerial(timestamp, key = dayKey(timestamp)) {
+  const date = new Date(timestamp);
+  const time = ((date.getHours() * 60 + date.getMinutes()) * 60 + date.getSeconds()) * 1000 + date.getMilliseconds();
+  return daySerial(key) + time / excelDay;
+}
+function escapeXml(value) {
+  return String(value).replace(/[&<>"']/g, char => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&apos;"})[char]);
+}
+function numberCell(value, style = 0) {
+  return value === null ? null : {value, style};
+}
+function sheet(rows, widths, filter = false) {
+  const lastColumn = String.fromCharCode(64 + widths.length);
+  const columns = widths.map((width, i) => '<col min="' + (i+1) + '" max="' + (i+1) + '" width="' + width + '" customWidth="1"/>').join("");
+  const data = rows.map((row, i) => '<row r="' + (i+1) + '">' + row.map((cell, j) => {
+    if (cell === null) return "";
+    const ref = String.fromCharCode(65+j) + (i+1);
+    if (typeof cell === "string") return '<c r="' + ref + '" s="' + (i === 0 ? 4 : 0) + '" t="inlineStr"><is><t>' + escapeXml(cell) + '</t></is></c>';
+    return '<c r="' + ref + '" s="' + cell.style + '"><v>' + cell.value + '</v></c>';
+  }).join("") + "</row>").join("");
+  return xmlHead + '<worksheet xmlns="' + sheetNS + '"><sheetViews><sheetView workbookViewId="0"><pane ySplit="1" topLeftCell="A2" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews><cols>' + columns + '</cols><sheetData>' + data + '</sheetData>' + (filter ? '<autoFilter ref="A1:' + lastColumn + rows.length + '"/>' : "") + '</worksheet>';
+}
+const crcTable = Uint32Array.from({length:256}, (_, index) => {
+  let value = index;
+  for (let i=0; i<8; i++) value = (value >>> 1) ^ (value & 1 ? 0xedb88320 : 0);
+  return value;
+});
+function zip(files) {
+  const encoder = new TextEncoder();
+  const contents = [];
+  const directory = [];
+  let offset = 0;
+  let directorySize = 0;
+  function bytes(size, fields) {
+    const array = new Uint8Array(size);
+    const view = new DataView(array.buffer);
+    for (const [position, length, value] of fields) {
+      if (length === 2) view.setUint16(position, value, true);
+      else view.setUint32(position, value, true);
+    }
+    return array;
+  }
+  for (const [path, content] of Object.entries(files)) {
+    const name = encoder.encode(path);
+    const payload = encoder.encode(content);
+    const crc = (payload.reduce((hash, byte) => (hash >>> 8) ^ crcTable[(hash ^ byte) & 255], 0xffffffff) ^ 0xffffffff) >>> 0;
+    const common = [[0,4,0x04034b50],[4,2,20],[12,2,33],[14,4,crc],[18,4,payload.length],[22,4,payload.length],[26,2,name.length]];
+    contents.push(bytes(30, common), name, payload);
+    directory.push(bytes(46, [[0,4,0x02014b50],[4,2,20],[6,2,20],[14,2,33],[16,4,crc],[20,4,payload.length],[24,4,payload.length],[28,2,name.length],[42,4,offset]]), name);
+    offset += 30 + name.length + payload.length;
+    directorySize += 46 + name.length;
+  }
+  const count = directory.length / 2;
+  const end = bytes(22, [[0,4,0x06054b50],[8,2,count],[10,2,count],[12,4,directorySize],[16,4,offset]]);
+  return new Blob([...contents,...directory,end], {type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
+}
+function workbook() {
+  const windows = [["Datum","Wochentag","Start","Ende","Dauer","Modus","Basiszeit","Verlängerung","Zielzeit","Ziel erreicht"]];
+  for (const item of [...state.sessions].sort((a,b) => a.start-b.start)) {
+    windows.push([numberCell(daySerial(item.day),1), displayWeekday(item.day), numberCell(dateTimeSerial(item.start,item.day),2), numberCell(dateTimeSerial(item.end),2), numberCell(item.elapsed/excelDay,3), modes[item.mode],
+      numberCell(item.base === null ? null : item.base/excelDay,3), numberCell(item.target === null ? null : item.extra/excelDay,3), numberCell(item.target === null ? null : item.target/excelDay,3), item.target === null ? null : item.elapsed >= item.target ? "Ja" : "Nein"]);
+  }
+  const days = [["Datum / Zeitraum","Zeitfenster","Ø Dauer","Status","Tagesabschluss"]];
+  const overall = average(state.sessions);
+  days.push(["Gesamterfassungszeitraum", numberCell(state.sessions.length), numberCell(overall === null ? null : overall/excelDay,3)]);
+  for (const [day, items] of [...groupDays()].sort(([a],[b]) => a.localeCompare(b))) {
+    const closed = state.days[day]?.closed;
+    const avg = average(items);
+    days.push([numberCell(daySerial(day),1), numberCell(items.length), numberCell(avg === null ? null : avg/excelDay,3), closed ? "Abgeschlossen" : "Offen", numberCell(closed ? dateTimeSerial(closed) : null,2)]);
+  }
+  const types = '<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/>' +
+    [1,2].map(i => '<Override PartName="/xl/worksheets/sheet' + i + '.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>').join("") + '</Types>';
+  const relations = (entries) => '<Relationships xmlns="' + packageNS + '">' + entries.map(([id,type,target]) => '<Relationship Id="rId' + id + '" Type="' + relNS + '/' + type + '" Target="' + target + '"/>').join("") + '</Relationships>';
+  const styles = '<styleSheet xmlns="' + sheetNS + '"><numFmts count="3"><numFmt numFmtId="164" formatCode="dd.mm.yyyy"/><numFmt numFmtId="165" formatCode="dd.mm.yyyy hh:mm:ss"/><numFmt numFmtId="166" formatCode="[mm]:ss"/></numFmts><fonts count="2"><font><sz val="11"/><name val="Calibri"/></font><font><b/><color rgb="FFFFFFFF"/><sz val="11"/><name val="Calibri"/></font></fonts><fills count="3"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FF10243A"/><bgColor indexed="64"/></patternFill></fill></fills><borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="5"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/>' +
+    [164,165,166].map(id => '<xf numFmtId="' + id + '" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1"/>').join("") + '<xf numFmtId="0" fontId="1" fillId="2" borderId="0" xfId="0" applyFont="1" applyFill="1"/></cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>';
+  return zip({
+    "[Content_Types].xml":xmlHead + types,
+    "_rels/.rels":xmlHead + relations([[1,"officeDocument","xl/workbook.xml"]]),
+    "xl/workbook.xml":xmlHead + '<workbook xmlns="' + sheetNS + '" xmlns:r="' + relNS + '"><bookViews><workbookView/></bookViews><sheets><sheet name="Zeitfenster" sheetId="1" r:id="rId1"/><sheet name="Tagesübersicht" sheetId="2" r:id="rId2"/></sheets></workbook>',
+    "xl/_rels/workbook.xml.rels":xmlHead + relations([[1,"worksheet","worksheets/sheet1.xml"],[2,"worksheet","worksheets/sheet2.xml"],[3,"styles","styles.xml"]]),
+    "xl/styles.xml":xmlHead + styles,
+    "xl/worksheets/sheet1.xml":sheet(windows,[15,15,24,24,12,30,13,17,12,17],true),
+    "xl/worksheets/sheet2.xml":sheet(days,[29,14,14,19,24])
+  });
+}
+byId("export").onclick = async () => {
+  try {
+    state = readState();
+    if (state.active && Date.now() >= state.active.start + sessionLimit) await checkLimit();
+    render();
+    const url = URL.createObjectURL(workbook());
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "FokusApp_" + dayKey() + ".xlsx";
+    document.body.append(link);
+    link.click();
+    link.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 30000);
+    feedback("Excel-Export erstellt.");
+  } catch {
+    feedback("Der Excel-Export konnte nicht erstellt werden.", true);
+  }
+};
+render();
+refresh();
+</script>
+</body>
+</html>
