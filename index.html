@@ -34,23 +34,30 @@ td:last-child:has(.delete-window){text-align:right}
 .version{margin-top:3px;font-size:11px}
 .start-stop {
   width:min(100%,264px);
-  aspect-ratio:1;
-  display:inline-grid;
-  place-items:center;
+  aspect-ratio:1 / 1;
+  position:relative;
+  display:inline-flex;
   padding:0;
   border:0;
-  border-radius:48px;
+  border-radius:18%;
   overflow:hidden;
-  background:#4F3B1E;
+  background:#FFF8E8;
   color:#FFF8E8;
   font-size:20px;
   font-weight:800;
   letter-spacing:-.02em;
   line-height:1;
 }
-.start-stop img,.start-stop span{grid-area:1/1}
-.start-stop img{display:block;width:100%;height:100%;pointer-events:none}
-.start-stop span{z-index:1;pointer-events:none}
+.start-stop img {
+  position:absolute;
+  inset:0;
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  pointer-events:none;
+}
+.start-stop span{position:relative;pointer-events:none}
 .start-stop.stop{box-shadow:0 0 0 3px var(--danger)}
 </style>
 </head>
