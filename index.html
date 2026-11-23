@@ -6,7 +6,6 @@
 <meta name="theme-color" content="#FFF8E8" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#2A1D10" media="(prefers-color-scheme: dark)">
 <title>FokusApp</title>
-<link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
 <style>
 /* Farbpalette der MediApp */
 :root {
@@ -32,25 +31,6 @@ main{padding:31px 0 35px}.heading{display:flex;align-items:end;justify-content:s
 .delete-window{min-height:36px;padding:5px 10px;color:var(--stop-ink)}
 td:last-child:has(.delete-window){text-align:right}
 .version{margin-top:3px;font-size:11px}
-.start-stop {
-  width:132px;
-  height:132px;
-  display:inline-grid;
-  place-items:center;
-  padding:0;
-  border:0;
-  border-radius:24px;
-  overflow:hidden;
-  background:#4F3B1E;
-  color:#FFF8E8;
-  font-size:13px;
-  font-weight:750;
-  line-height:1;
-}
-.start-stop img,.start-stop span{grid-area:1/1}
-.start-stop img{display:block;width:100%;height:100%;pointer-events:none}
-.start-stop span{z-index:1;pointer-events:none}
-.start-stop.stop{box-shadow:0 0 0 3px var(--danger)}
 </style>
 </head>
 <body>
@@ -64,10 +44,7 @@ td:last-child:has(.delete-window){text-align:right}
     <section class="card timer" aria-labelledby="timer-title">
       <div class="timer-top"><h2 id="timer-title">Arbeitsphase</h2><span id="status" class="pill"></span></div>
       <div class="clock-block"><div id="clock-caption" class="clock-caption">Erfasste Zeit</div><div id="clock" class="clock">00:00</div><div id="subclock" class="subclock"></div><div class="track" id="track" aria-hidden="true" hidden><span></span></div></div>
-      <div style="width:100%"><button id="start-stop" class="button start-stop" type="button">
-        <img src="./apple-touch-icon.png" width="132" height="132" alt="">
-        <span id="start-stop-label">Start</span>
-      </button><p class="timer-note" id="timer-note"></p><button class="button" id="enable-audio" hidden>Tonsignal aktivieren</button></div>
+      <div style="width:100%"><button id="start-stop" class="button primary">Arbeitsphase starten</button><p class="timer-note" id="timer-note"></p><button class="button" id="enable-audio" hidden>Tonsignal aktivieren</button></div>
     </section>
     <section class="card settings" aria-labelledby="settings-title">
       <h2 id="settings-title">Timer-Modus</h2>
@@ -91,7 +68,7 @@ td:last-child:has(.delete-window){text-align:right}
     <div class="table-wrap" tabindex="0" role="region" aria-label="Protokolltabelle"><table id="records"></table></div>
   </section>
   <p class="footer">Die Erfassung bleibt in diesem Browser gespeichert.</p>
-  <p class="footer version">Version 1.2.1</p>
+  <p class="footer version">Version 1.2.0</p>
 </main>
 <script>
 "use strict";
@@ -268,7 +245,7 @@ function renderClock() {
   byId("track").hidden = target === null;
   byId("track").firstElementChild.style.width = target ? Math.min(100, elapsed / target * 100) + "%" : "0";
   const button = byId("start-stop");
-  byId("start-stop-label").textContent = active ? "Stop" : "Start";
+  button.textContent = active ? "Stopp · Konzentration abgebrochen" : "Arbeitsphase starten";
   button.classList.toggle("stop", Boolean(active));
   button.disabled = !active && (Boolean(state.days[today]?.closed) || (mode !== "free" && target === null));
   byId("enable-audio").hidden = !active || audio?.state === "running";
