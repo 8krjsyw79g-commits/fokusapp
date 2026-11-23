@@ -28,6 +28,9 @@ main{padding:31px 0 35px}.heading{display:flex;align-items:end;justify-content:s
 .timer-top{width:100%;display:flex;justify-content:space-between;gap:8px;align-items:center;text-align:left}.timer h2,.card h2{font-size:17px;letter-spacing:-.025em;margin:0}.pill{display:inline-flex;gap:7px;align-items:center;border-radius:30px;padding:4px 9px;background:var(--panel2);color:var(--ink);border:1px solid var(--line);font-size:12px;font-weight:650}.pill:before{content:'';width:7px;height:7px;background:var(--muted);border-radius:50%}.pill.running:before{background:var(--teal)}.pill.reached{color:var(--teal-ink)}.clock-block{width:100%;padding:22px 0 18px}.clock-caption{color:var(--muted);font-size:14px}.clock,.counter,.value,td{font-variant-numeric:tabular-nums}.clock{font-size:clamp(60px,9vw,100px);line-height:1.06;letter-spacing:-.07em;font-weight:670;margin:4px 0 5px;overflow-wrap:anywhere}.subclock{min-height:24px;color:var(--muted);font-size:14px}.track{height:4px;width:min(240px,75%);margin:13px auto 0;border-radius:10px;overflow:hidden;background:var(--line)}.track span{display:block;background:var(--teal);height:100%;width:0}.primary{min-height:53px;background:var(--accent);border-color:transparent;color:var(--button-ink);width:min(100%,275px);font-size:16px}.primary.stop{background:color-mix(in srgb,var(--danger) 13%,var(--paper));border-color:var(--danger);color:var(--stop-ink)}.timer-note{font-size:12px;color:var(--muted);margin:9px 0 0;min-height:18px}.settings{display:flex;flex-direction:column;gap:14px}.modes{display:grid;gap:6px}.mode{min-height:43px;text-align:left;display:flex;gap:10px;align-items:center;border:1px solid var(--line);border-radius:10px;padding:6px 10px;font-size:14px;cursor:pointer}.mode:has(:checked){border-color:var(--accent);background:color-mix(in srgb,var(--accent) 17%,var(--paper))}.mode:has(:disabled){cursor:default}.mode input{accent-color:var(--accent);width:16px;height:16px;flex:none}.mode small{color:var(--muted);margin-left:auto;text-align:right}.settings-row{display:flex;justify-content:space-between;align-items:center;gap:8px}.settings-row .button{min-height:38px}.settings-row small,.hint{color:var(--muted);font-size:13px}.hint{margin:0}.target{border-top:1px solid var(--line);padding-top:12px}.value{font-size:19px;font-weight:720}.steps{display:flex;align-items:center;gap:7px}.steps .button{padding-inline:9px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:16px 0}.stat{padding:15px 19px;border-radius:17px}.stat span{color:var(--muted);font-size:13px;font-weight:620}.stat strong{display:block;font-size:30px;letter-spacing:-.055em;line-height:1.15;margin-top:3px}.records{padding-bottom:15px}.records-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}.tabs{display:flex;gap:4px;background:var(--bg);border-radius:10px;padding:3px}.tab{min-height:35px;border:0;border-radius:8px;background:transparent;color:var(--muted);padding:5px 10px;font-size:13px;font-weight:650}.tab[aria-pressed=true]{background:var(--paper);color:var(--ink);box-shadow:0 0 0 1px var(--line)}.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;text-align:left;white-space:nowrap;font-size:14px}th,td{border-bottom:1px solid var(--line);padding:9px 12px}th{font-size:12px;color:var(--muted)}tbody tr:last-child td{border-bottom:0}.empty{white-space:normal;color:var(--muted);padding-block:19px}.footer{color:var(--muted);font-size:13px;margin:11px 0 0}.feedback{margin:0 0 14px;padding:9px 13px;border-radius:10px;background:color-mix(in srgb,var(--teal) 14%,var(--paper));color:var(--teal-ink);font-size:14px}.feedback.error{background:color-mix(in srgb,var(--danger) 13%,var(--paper));color:var(--stop-ink)}
 @media(max-width:760px){.shell{width:calc(100% - 28px)}main{padding-top:21px}.heading{align-items:start;flex-direction:column}.dashboard{grid-template-columns:1fr}.card{padding:17px}.timer{min-height:330px}.stats{gap:7px}.stat{padding:11px 8px}.stat span{font-size:11px}.stat strong{font-size:25px}.tabs{flex-wrap:wrap}.topbar{min-height:63px}.settings{gap:11px}}
 @media(prefers-reduced-motion:no-preference){.track span{transition:width .2s linear}}
+.delete-window{min-height:36px;padding:5px 10px;color:var(--stop-ink)}
+td:last-child:has(.delete-window){text-align:right}
+.version{margin-top:3px;font-size:11px}
 </style>
 </head>
 <body>
@@ -65,15 +68,18 @@ main{padding:31px 0 35px}.heading{display:flex;align-items:end;justify-content:s
     <div class="table-wrap" tabindex="0" role="region" aria-label="Protokolltabelle"><table id="records"></table></div>
   </section>
   <p class="footer">Die Erfassung bleibt in diesem Browser gespeichert.</p>
+  <p class="footer version">Version 1.2.0</p>
 </main>
 <script>
 "use strict";
 const byId = id => document.getElementById(id);
 const storageKey = "fokusapp.v1";
 const fiveMinutes = 300000;
+const sessionLimit = 90 * 60 * 1000;
 const modes = {free:"Freie Erfassung",target:"Fokusfenster",extended:"Verlängertes Fokusfenster"};
 const clockFormat = new Intl.DateTimeFormat("de-DE", {hour:"2-digit",minute:"2-digit",second:"2-digit"});
 const dateFormat = new Intl.DateTimeFormat("de-DE", {weekday:"long",day:"numeric",month:"long",year:"numeric"});
+const weekdayFormat = new Intl.DateTimeFormat("de-DE", {weekday:"long"});
 const stampFormat = new Intl.DateTimeFormat("de-DE", {day:"2-digit",month:"2-digit",year:"numeric"});
 const blankState = () => ({days:{}, sessions:[], active:null, base:null, extra:fiveMinutes, mode:"free"});
 let state = blankState();
@@ -120,6 +126,7 @@ function dayKey(timestamp = Date.now()) {
 function displayDay(key) {
   return stampFormat.format(new Date(key + "T12:00:00"));
 }
+const displayWeekday = key => weekdayFormat.format(new Date(key + "T12:00:00"));
 function duration(ms, round = Math.round) {
   const seconds = Math.max(0, round(ms / 1000));
   return String(Math.floor(seconds / 60)).padStart(2,"0") + ":" + String(seconds % 60).padStart(2,"0");
@@ -162,14 +169,57 @@ function gong(double) {
   }
   return true;
 }
+function limitSignal() {
+  if (audio?.state === "running") {
+    const start = audio.currentTime;
+    const oscillator = audio.createOscillator();
+    const gain = audio.createGain();
+    oscillator.frequency.value = 880;
+    gain.gain.setValueAtTime(.0001, start);
+    gain.gain.exponentialRampToValueAtTime(.17, start + .018);
+    gain.gain.exponentialRampToValueAtTime(.0001, start + .28);
+    oscillator.connect(gain).connect(audio.destination);
+    oscillator.start(start);
+    oscillator.stop(start + .3);
+  }
+  navigator.vibrate?.(180);
+}
+function finishSession(next, now) {
+  const active = next.active;
+  const deadline = active.start + sessionLimit;
+  const end = Math.min(deadline, Math.max(now, active.start));
+  next.sessions.push({...active, end, elapsed:end - active.start});
+  next.active = null;
+  return end === deadline ? "limited" : "stopped";
+}
+function reportStop(result) {
+  if (result === "limited") {
+    feedback("Nach 90 Minuten automatisch gestoppt und gespeichert.");
+    limitSignal();
+  } else if (result === "stopped") {
+    feedback("Zeitfenster gespeichert.");
+  }
+}
+let pendingLimit;
+function checkLimit() {
+  if (pendingLimit) return pendingLimit;
+  const start = state.active?.start;
+  if (start === undefined || Date.now() < start + sessionLimit) return;
+  pendingLimit = update(next => {
+    const now = Date.now();
+    if (next.active?.start !== start || now < start + sessionLimit) return false;
+    return finishSession(next, now);
+  }).then(reportStop).finally(() => { pendingLimit = undefined; });
+  return pendingLimit;
+}
 let signalling = false;
 async function checkSignal() {
   const active = state.active;
-  if (!active?.target || active.signalled || signalling || document.hidden || audio?.state !== "running" || Date.now() - active.start < active.target) return;
+  if (!active?.target || active.signalled || signalling || document.hidden || audio?.state !== "running" || Date.now() - active.start < active.target || Date.now() - active.start >= sessionLimit) return;
   signalling = true;
   try {
     const isDouble = await update(next => {
-      if (next.active?.start !== active.start || next.active.signalled) return false;
+      if (next.active?.start !== active.start || next.active.signalled || Date.now() - active.start >= sessionLimit) return false;
       next.active.signalled = true;
       return next.active.mode === "extended" ? "double" : "single";
     });
@@ -184,7 +234,7 @@ function renderClock() {
   const mode = active?.mode || state.mode;
   const planned = mode === "free" || state.base === null ? null : state.base + (mode === "extended" ? state.extra : 0);
   const target = active ? active.target : planned;
-  const elapsed = active ? Math.max(0, Date.now() - active.start) : 0;
+  const elapsed = active ? Math.min(sessionLimit, Math.max(0, Date.now() - active.start)) : 0;
   const reached = active && target !== null && elapsed >= target;
   const status = byId("status");
   status.className = "pill" + (active ? " running" : "") + (reached ? " reached" : "");
@@ -198,15 +248,18 @@ function renderClock() {
   button.textContent = active ? "Stopp · Konzentration abgebrochen" : "Arbeitsphase starten";
   button.classList.toggle("stop", Boolean(active));
   button.disabled = !active && (Boolean(state.days[today]?.closed) || (mode !== "free" && target === null));
-  byId("enable-audio").hidden = !active || target === null || active.signalled || audio?.state === "running";
-  byId("timer-note").textContent = reached ? "Die Erfassung läuft bis zum Stopp weiter." : mode === "free" ? "" : "Für das Tonsignal die App im Vordergrund lassen.";
+  byId("enable-audio").hidden = !active || audio?.state === "running";
+  byId("timer-note").textContent = reached ? "Die Erfassung läuft bis zum Stopp oder bis 90:00 weiter." : "Automatischer Stopp bei 90:00. Für das Tonsignal die App im Vordergrund lassen.";
 }
 function renderTable(todayItems, groups) {
   const table = byId("records");
   const head = document.createElement("thead");
   const body = document.createElement("tbody");
   const dayView = view === "days";
-  const headers = dayView ? ["Datum","Zeitfenster","Ø Dauer","Status","Abschluss"] : ["Datum","Start","Abbruch","Dauer","Modus","Basiszeit","+ Verlängerung","Zielzeit","Ziel erreicht"];
+  const compactView = view === "all";
+  let headers = ["Datum","Start","Ende","Dauer","Modus","Basiszeit","+ Verlängerung","Zielzeit","Ziel erreicht"];
+  if (dayView) headers = ["Datum","Zeitfenster","Ø Dauer","Status","Abschluss"];
+  if (compactView) headers = ["Datum","Dauer (min:sec)",""];
   function append(parent, values, tag) {
     const row = parent.insertRow();
     for (const value of values) {
@@ -215,6 +268,7 @@ function renderTable(todayItems, groups) {
       cell.textContent = value;
       row.append(cell);
     }
+    return row;
   }
   append(head, headers, "th");
   if (dayView) {
@@ -225,6 +279,17 @@ function renderTable(todayItems, groups) {
   } else {
     const items = view === "today" ? todayItems : state.sessions;
     for (const item of [...items].sort((a,b) => b.start - a.start)) {
+      if (compactView) {
+        const row = append(body, [displayDay(item.day), duration(item.elapsed)], "td");
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "button delete-window";
+        button.textContent = "Löschen";
+        button.setAttribute("aria-label", "Zeitfenster vom " + displayDay(item.day) + " um " + clockFormat.format(item.start) + " löschen");
+        button.onclick = () => deleteSession(item);
+        row.insertCell().append(button);
+        continue;
+      }
       const endDay = dayKey(item.end);
       const end = clockFormat.format(item.end) + (endDay === item.day ? "" : " · " + displayDay(endDay));
       append(body, [displayDay(item.day), clockFormat.format(item.start), end, duration(item.elapsed), modes[item.mode], displayDuration(item.base), item.extra ? duration(item.extra) : "—", displayDuration(item.target), item.target === null ? "—" : item.elapsed >= item.target ? "Ja" : "Nein"], "td");
@@ -237,6 +302,20 @@ function renderTable(todayItems, groups) {
     cell.textContent = dayView ? "Noch keine Erfassungstage vorhanden." : "Noch keine Zeitfenster erfasst.";
   }
   table.replaceChildren(head, body);
+}
+async function deleteSession(item) {
+  const description = displayDay(item.day) + ", " + clockFormat.format(item.start) + " Uhr (" + duration(item.elapsed) + ")";
+  if (!window.confirm("Zeitfenster vom " + description + " dauerhaft löschen?")) return;
+  const deleted = await update(next => {
+    const index = next.sessions.findIndex(session => session.start === item.start && session.end === item.end);
+    if (index === -1) return false;
+    next.sessions.splice(index, 1);
+    return true;
+  });
+  if (deleted) {
+    feedback("Zeitfenster gelöscht. Die Durchschnitte wurden neu berechnet.");
+    document.querySelector('[data-view="all"]').focus();
+  }
 }
 function render() {
   const today = dayKey();
@@ -290,15 +369,12 @@ byId("close-day").onclick = async () => {
 };
 byId("start-stop").onclick = async () => {
   const activeStart = state.active?.start;
-  if (activeStart === undefined || state.active.target !== null) audioUnlock();
+  audioUnlock();
   const changed = await update(next => {
     const now = Date.now();
     if (activeStart !== undefined) {
       if (next.active?.start !== activeStart) return false;
-      const end = Math.max(now, activeStart);
-      next.sessions.push({...next.active, end, elapsed:end - activeStart});
-      next.active = null;
-      return "stopped";
+      return finishSession(next, now);
     }
     const day = dayKey(now);
     if (next.active || next.days[day]?.closed || (next.mode !== "free" && next.base === null)) return false;
@@ -308,7 +384,8 @@ byId("start-stop").onclick = async () => {
     next.active = {day, start:now, mode:next.mode, base, extra, target:base === null ? null : base + extra, signalled:false};
     return "started";
   });
-  if (changed) feedback(changed === "stopped" ? "Zeitfenster gespeichert." : "");
+  if (changed === "started") feedback("");
+  else reportStop(changed);
 };
 byId("adopt").onclick = async () => {
   const adopted = await update(next => {
@@ -337,6 +414,7 @@ function refresh() {
   try {
     state = readState();
     render();
+    checkLimit();
   } catch {
     feedback("Die gespeicherten Daten lassen sich gerade nicht lesen.", true);
   }
@@ -355,6 +433,7 @@ setInterval(() => {
   if (dayKey() !== renderedDate) render();
   if (state.active) {
     renderClock();
+    checkLimit();
     checkSignal();
   }
 }, 150);
@@ -422,9 +501,9 @@ function zip(files) {
   return new Blob([...contents,...directory,end], {type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
 }
 function workbook() {
-  const windows = [["Datum","Start","Abbruch","Dauer","Modus","Basiszeit","Verlängerung","Zielzeit","Ziel erreicht"]];
+  const windows = [["Datum","Wochentag","Start","Ende","Dauer","Modus","Basiszeit","Verlängerung","Zielzeit","Ziel erreicht"]];
   for (const item of [...state.sessions].sort((a,b) => a.start-b.start)) {
-    windows.push([numberCell(daySerial(item.day),1), numberCell(dateTimeSerial(item.start,item.day),2), numberCell(dateTimeSerial(item.end),2), numberCell(item.elapsed/excelDay,3), modes[item.mode],
+    windows.push([numberCell(daySerial(item.day),1), displayWeekday(item.day), numberCell(dateTimeSerial(item.start,item.day),2), numberCell(dateTimeSerial(item.end),2), numberCell(item.elapsed/excelDay,3), modes[item.mode],
       numberCell(item.base === null ? null : item.base/excelDay,3), numberCell(item.target === null ? null : item.extra/excelDay,3), numberCell(item.target === null ? null : item.target/excelDay,3), item.target === null ? null : item.elapsed >= item.target ? "Ja" : "Nein"]);
   }
   const days = [["Datum / Zeitraum","Zeitfenster","Ø Dauer","Status","Tagesabschluss"]];
@@ -446,13 +525,14 @@ function workbook() {
     "xl/workbook.xml":xmlHead + '<workbook xmlns="' + sheetNS + '" xmlns:r="' + relNS + '"><bookViews><workbookView/></bookViews><sheets><sheet name="Zeitfenster" sheetId="1" r:id="rId1"/><sheet name="Tagesübersicht" sheetId="2" r:id="rId2"/></sheets></workbook>',
     "xl/_rels/workbook.xml.rels":xmlHead + relations([[1,"worksheet","worksheets/sheet1.xml"],[2,"worksheet","worksheets/sheet2.xml"],[3,"styles","styles.xml"]]),
     "xl/styles.xml":xmlHead + styles,
-    "xl/worksheets/sheet1.xml":sheet(windows,[15,24,24,12,30,13,17,12,17],true),
+    "xl/worksheets/sheet1.xml":sheet(windows,[15,15,24,24,12,30,13,17,12,17],true),
     "xl/worksheets/sheet2.xml":sheet(days,[29,14,14,19,24])
   });
 }
-byId("export").onclick = () => {
+byId("export").onclick = async () => {
   try {
     state = readState();
+    if (state.active && Date.now() >= state.active.start + sessionLimit) await checkLimit();
     render();
     const url = URL.createObjectURL(workbook());
     const link = document.createElement("a");
