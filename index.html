@@ -6,6 +6,7 @@
 <meta name="theme-color" content="#FFF8E8" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#2A1D10" media="(prefers-color-scheme: dark)">
 <title>FokusApp</title>
+<link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
 <style>
 /* Farbpalette der MediApp */
 :root {
@@ -25,12 +26,32 @@
 *{box-sizing:border-box}body{margin:0;color:var(--ink);background:var(--bg);font:16px/1.45 system-ui,-apple-system,sans-serif}button,select{font:inherit}button{cursor:pointer}button:disabled{cursor:default;opacity:.46}button:focus-visible,select:focus-visible,.table-wrap:focus-visible{outline:3px solid var(--warn);outline-offset:4px}
 .shell{width:min(1136px,100% - 48px);margin:0 auto}header{border-bottom:1px solid var(--line);background:var(--paper)}.credit{margin:0 auto;padding-top:8px;font-size:11px;line-height:1.35;color:var(--muted)}.topbar{min-height:74px;display:flex;align-items:center;justify-content:space-between;gap:12px}.brand{display:flex;align-items:center;gap:11px;font-size:20px;font-weight:760;letter-spacing:-.04em}.logo{display:grid;place-items:center;width:35px;height:35px;border-radius:11px;background:var(--accent);color:var(--button-ink);font-size:24px}.button{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:9px 15px;border:1px solid var(--line);border-radius:11px;background:var(--paper);color:var(--ink);font-weight:650;font-size:14px}.button:hover:not(:disabled){filter:brightness(.96)}.outline{background:transparent}
 main{padding:31px 0 35px}.heading{display:flex;align-items:end;justify-content:space-between;gap:16px;margin-bottom:19px}.heading p{margin:0;color:var(--muted);font-size:14px}.heading h1{font-size:clamp(28px,5vw,41px);letter-spacing:-.055em;line-height:1.05;margin:5px 0 0}.actions{display:flex;gap:8px;flex-wrap:wrap}.dashboard{display:grid;grid-template-columns:1.35fr 1fr;gap:16px;align-items:stretch}.card{border:1px solid var(--line);background:var(--paper);border-radius:var(--radius);padding:23px;box-shadow:var(--shadow)}.timer{background:linear-gradient(180deg,var(--paper),var(--panel2));color:var(--ink);text-align:center;display:flex;align-items:center;flex-direction:column;justify-content:space-between;min-height:385px}.timer [hidden], [hidden]{display:none!important}
-.timer-top{width:100%;display:flex;justify-content:space-between;gap:8px;align-items:center;text-align:left}.timer h2,.card h2{font-size:17px;letter-spacing:-.025em;margin:0}.pill{display:inline-flex;gap:7px;align-items:center;border-radius:30px;padding:4px 9px;background:var(--panel2);color:var(--ink);border:1px solid var(--line);font-size:12px;font-weight:650}.pill:before{content:'';width:7px;height:7px;background:var(--muted);border-radius:50%}.pill.running:before{background:var(--teal)}.pill.reached{color:var(--teal-ink)}.clock-block{width:100%;padding:22px 0 18px}.clock-caption{color:var(--muted);font-size:14px}.clock,.counter,.value,td{font-variant-numeric:tabular-nums}.clock{font-size:clamp(60px,9vw,100px);line-height:1.06;letter-spacing:-.07em;font-weight:670;margin:4px 0 5px;overflow-wrap:anywhere}.subclock{min-height:24px;color:var(--muted);font-size:14px}.track{height:4px;width:min(240px,75%);margin:13px auto 0;border-radius:10px;overflow:hidden;background:var(--line)}.track span{display:block;background:var(--teal);height:100%;width:0}.primary{min-height:53px;background:var(--accent);border-color:transparent;color:var(--button-ink);width:min(100%,275px);font-size:16px}.primary.stop{background:color-mix(in srgb,var(--danger) 13%,var(--paper));border-color:var(--danger);color:var(--stop-ink)}.timer-note{font-size:12px;color:var(--muted);margin:9px 0 0;min-height:18px}.settings{display:flex;flex-direction:column;gap:14px}.modes{display:grid;gap:6px}.mode{min-height:43px;text-align:left;display:flex;gap:10px;align-items:center;border:1px solid var(--line);border-radius:10px;padding:6px 10px;font-size:14px;cursor:pointer}.mode:has(:checked){border-color:var(--accent);background:color-mix(in srgb,var(--accent) 17%,var(--paper))}.mode:has(:disabled){cursor:default}.mode input{accent-color:var(--accent);width:16px;height:16px;flex:none}.mode small{color:var(--muted);margin-left:auto;text-align:right}.settings-row{display:flex;justify-content:space-between;align-items:center;gap:8px}.settings-row .button{min-height:38px}.settings-row small,.hint{color:var(--muted);font-size:13px}.hint{margin:0}.target{border-top:1px solid var(--line);padding-top:12px}.value{font-size:19px;font-weight:720}.steps{display:flex;align-items:center;gap:7px}.steps .button{padding-inline:9px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:16px 0}.stat{padding:15px 19px;border-radius:17px}.stat span{color:var(--muted);font-size:13px;font-weight:620}.stat strong{display:block;font-size:30px;letter-spacing:-.055em;line-height:1.15;margin-top:3px}.records{padding-bottom:15px}.records-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}.tabs{display:flex;gap:4px;background:var(--bg);border-radius:10px;padding:3px}.tab{min-height:35px;border:0;border-radius:8px;background:transparent;color:var(--muted);padding:5px 10px;font-size:13px;font-weight:650}.tab[aria-pressed=true]{background:var(--paper);color:var(--ink);box-shadow:0 0 0 1px var(--line)}.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;text-align:left;white-space:nowrap;font-size:14px}th,td{border-bottom:1px solid var(--line);padding:9px 12px}th{font-size:12px;color:var(--muted)}tbody tr:last-child td{border-bottom:0}.empty{white-space:normal;color:var(--muted);padding-block:19px}.footer{color:var(--muted);font-size:13px;margin:11px 0 0}.feedback{margin:0 0 14px;padding:9px 13px;border-radius:10px;background:color-mix(in srgb,var(--teal) 14%,var(--paper));color:var(--teal-ink);font-size:14px}.feedback.error{background:color-mix(in srgb,var(--danger) 13%,var(--paper));color:var(--stop-ink)}
+.timer-top{width:100%;display:flex;justify-content:space-between;gap:8px;align-items:center;text-align:left}.timer h2,.card h2{font-size:17px;letter-spacing:-.025em;margin:0}.pill{display:inline-flex;gap:7px;align-items:center;border-radius:30px;padding:4px 9px;background:var(--panel2);color:var(--ink);border:1px solid var(--line);font-size:12px;font-weight:650}.pill:before{content:'';width:7px;height:7px;background:var(--muted);border-radius:50%}.pill.running:before{background:var(--teal)}.pill.reached{color:var(--teal-ink)}.clock-block{width:100%;padding:22px 0 18px}.clock-caption{color:var(--muted);font-size:14px}.clock,.counter,.value,td{font-variant-numeric:tabular-nums}.clock{font-size:clamp(60px,9vw,100px);line-height:1.06;letter-spacing:-.07em;font-weight:670;margin:4px 0 5px;overflow-wrap:anywhere}.subclock{min-height:24px;color:var(--muted);font-size:14px}.track{height:4px;width:min(240px,75%);margin:13px auto 0;border-radius:10px;overflow:hidden;background:var(--line)}.track span{display:block;background:var(--teal);height:100%;width:0}.primary{min-height:53px;background:var(--accent);border-color:transparent;color:var(--button-ink);width:min(100%,275px);font-size:16px}.primary.stop{background:color-mix(in srgb,var(--danger) 13%,var(--paper));border-color:var(--danger);color:var(--stop-ink)}.settings{display:flex;flex-direction:column;gap:14px}.modes{display:grid;gap:6px}.mode{min-height:43px;text-align:left;display:flex;gap:10px;align-items:center;border:1px solid var(--line);border-radius:10px;padding:6px 10px;font-size:14px;cursor:pointer}.mode:has(:checked){border-color:var(--accent);background:color-mix(in srgb,var(--accent) 17%,var(--paper))}.mode:has(:disabled){cursor:default}.mode input{accent-color:var(--accent);width:16px;height:16px;flex:none}.mode small{color:var(--muted);margin-left:auto;text-align:right}.settings-row{display:flex;justify-content:space-between;align-items:center;gap:8px}.settings-row .button{min-height:38px}.settings-row small,.hint{color:var(--muted);font-size:13px}.hint{margin:0}.target{border-top:1px solid var(--line);padding-top:12px}.value{font-size:19px;font-weight:720}.steps{display:flex;align-items:center;gap:7px}.steps .button{padding-inline:9px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:16px 0}.stat{padding:15px 19px;border-radius:17px}.stat span{color:var(--muted);font-size:13px;font-weight:620}.stat strong{display:block;font-size:30px;letter-spacing:-.055em;line-height:1.15;margin-top:3px}.records{padding-bottom:15px}.records-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}.tabs{display:flex;gap:4px;background:var(--bg);border-radius:10px;padding:3px}.tab{min-height:35px;border:0;border-radius:8px;background:transparent;color:var(--muted);padding:5px 10px;font-size:13px;font-weight:650}.tab[aria-pressed=true]{background:var(--paper);color:var(--ink);box-shadow:0 0 0 1px var(--line)}.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;text-align:left;white-space:nowrap;font-size:14px}th,td{border-bottom:1px solid var(--line);padding:9px 12px}th{font-size:12px;color:var(--muted)}tbody tr:last-child td{border-bottom:0}.empty{white-space:normal;color:var(--muted);padding-block:19px}.footer{color:var(--muted);font-size:13px;margin:11px 0 0}.feedback{margin:0 0 14px;padding:9px 13px;border-radius:10px;background:color-mix(in srgb,var(--teal) 14%,var(--paper));color:var(--teal-ink);font-size:14px}.feedback.error{background:color-mix(in srgb,var(--danger) 13%,var(--paper));color:var(--stop-ink)}
 @media(max-width:760px){.shell{width:calc(100% - 28px)}main{padding-top:21px}.heading{align-items:start;flex-direction:column}.dashboard{grid-template-columns:1fr}.card{padding:17px}.timer{min-height:330px}.stats{gap:7px}.stat{padding:11px 8px}.stat span{font-size:11px}.stat strong{font-size:25px}.tabs{flex-wrap:wrap}.topbar{min-height:63px}.settings{gap:11px}}
 @media(prefers-reduced-motion:no-preference){.track span{transition:width .2s linear}}
 .delete-window{min-height:36px;padding:5px 10px;color:var(--stop-ink)}
 td:last-child:has(.delete-window){text-align:right}
 .version{margin-top:3px;font-size:11px}
+.start-stop {
+  width:min(100%,264px);
+  aspect-ratio:1;
+  display:inline-grid;
+  place-items:center;
+  padding:0;
+  border:0;
+  border-radius:48px;
+  overflow:hidden;
+  background:#4F3B1E;
+  color:#FFF8E8;
+  font-size:20px;
+  font-weight:800;
+  letter-spacing:-.02em;
+  line-height:1;
+}
+.start-stop img,.start-stop span{grid-area:1/1}
+.start-stop img{display:block;width:100%;height:100%;pointer-events:none}
+.start-stop span{z-index:1;pointer-events:none}
+.start-stop.stop{box-shadow:0 0 0 3px var(--danger)}
 </style>
 </head>
 <body>
@@ -44,7 +65,10 @@ td:last-child:has(.delete-window){text-align:right}
     <section class="card timer" aria-labelledby="timer-title">
       <div class="timer-top"><h2 id="timer-title">Arbeitsphase</h2><span id="status" class="pill"></span></div>
       <div class="clock-block"><div id="clock-caption" class="clock-caption">Erfasste Zeit</div><div id="clock" class="clock">00:00</div><div id="subclock" class="subclock"></div><div class="track" id="track" aria-hidden="true" hidden><span></span></div></div>
-      <div style="width:100%"><button id="start-stop" class="button primary">Arbeitsphase starten</button><p class="timer-note" id="timer-note"></p><button class="button" id="enable-audio" hidden>Tonsignal aktivieren</button></div>
+      <div style="width:100%"><button id="start-stop" class="button start-stop" type="button">
+        <img src="./apple-touch-icon.png" width="264" height="264" alt="">
+        <span id="start-stop-label">START</span>
+      </button><button class="button" id="enable-audio" hidden>Tonsignal aktivieren</button></div>
     </section>
     <section class="card settings" aria-labelledby="settings-title">
       <h2 id="settings-title">Timer-Modus</h2>
@@ -68,7 +92,7 @@ td:last-child:has(.delete-window){text-align:right}
     <div class="table-wrap" tabindex="0" role="region" aria-label="Protokolltabelle"><table id="records"></table></div>
   </section>
   <p class="footer">Die Erfassung bleibt in diesem Browser gespeichert.</p>
-  <p class="footer version">Version 1.2.0</p>
+  <p class="footer version">Version 1.2.1</p>
 </main>
 <script>
 "use strict";
@@ -245,11 +269,10 @@ function renderClock() {
   byId("track").hidden = target === null;
   byId("track").firstElementChild.style.width = target ? Math.min(100, elapsed / target * 100) + "%" : "0";
   const button = byId("start-stop");
-  button.textContent = active ? "Stopp · Konzentration abgebrochen" : "Arbeitsphase starten";
+  byId("start-stop-label").textContent = active ? "STOP" : "START";
   button.classList.toggle("stop", Boolean(active));
   button.disabled = !active && (Boolean(state.days[today]?.closed) || (mode !== "free" && target === null));
   byId("enable-audio").hidden = !active || audio?.state === "running";
-  byId("timer-note").textContent = reached ? "Die Erfassung läuft bis zum Stopp oder bis 90:00 weiter." : "Automatischer Stopp bei 90:00. Für das Tonsignal die App im Vordergrund lassen.";
 }
 function renderTable(todayItems, groups) {
   const table = byId("records");
